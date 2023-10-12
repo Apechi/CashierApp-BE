@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use Exception;
 
 class CategoryController extends Controller
 {
@@ -29,9 +30,10 @@ class CategoryController extends Controller
 
             $json = response()->json(
                 [
-                    'status' => 505,
+                    'status' => 500,
                     'error' => $th->getMessage()
-                ]
+                ],
+                500
             );
         }
     }
@@ -41,7 +43,26 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        try {
+            $validate = $request->validated();
+
+            $category = Category::create($validate);
+
+            return response()->json([
+                'status' => 200,
+                'data' => $category
+            ]);
+        } catch (Exception $th) {
+            $json = response()->json(
+                [
+                    'status' => 500,
+                    'error' => $th->getMessage()
+                ],
+                500
+            );
+
+            return $json;
+        }
     }
 
     /**
@@ -57,7 +78,28 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        try {
+
+            $validated = $request->validated();
+            $category->update($validated);
+
+            return response()->json(
+                [
+                    'status' => 200,
+                    'data' => $category,
+                ]
+            );
+        } catch (Exception $th) {
+            $json = response()->json(
+                [
+                    'status' => 500,
+                    'error' => $th->getMessage()
+                ],
+                500
+            );
+
+            return $json;
+        }
     }
 
     /**
@@ -65,6 +107,22 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        try {
+            $category->delete();
+            return response()->json([
+                "status" => 200,
+                "message" => "{$category->name} Telah di hapus"
+            ]);
+        } catch (Exception $th) {
+            $json = response()->json(
+                [
+                    'status' => 500,
+                    'error' => $th->getMessage()
+                ],
+                500
+            );
+
+            return $json;
+        }
     }
 }
