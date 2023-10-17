@@ -78,7 +78,27 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        try {
+            $validate = $request->validated();
+
+            $product::update($validate);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'berhasil di edit',
+                'data' => $product
+            ]);
+        } catch (Exception $th) {
+            $json = response()->json(
+                [
+                    'status' => 500,
+                    'error' => $th->getMessage()
+                ],
+                500
+            );
+
+            return $json;
+        }
     }
 
     /**
@@ -86,6 +106,22 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        try {
+            $product->delete();
+            return response()->json([
+                "status" => 200,
+                "message" => "{$product->name} Telah di hapus"
+            ]);
+        } catch (Exception $th) {
+            $json = response()->json(
+                [
+                    'status' => 500,
+                    'error' => $th->getMessage()
+                ],
+                500
+            );
+
+            return $json;
+        }
     }
 }
