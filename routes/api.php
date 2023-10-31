@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +18,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::get('P', [AuthController::class, 'logout']);
 
-Route::apiResource('/category', CategoryController::class);
-Route::apiResource('/products', ProductController::class);
+
+Route::middleware('auth:api')->group(function () {
+    Route::get('user', [AuthController::class, 'userInfo']);
+    Route::apiResource('/category', CategoryController::class);
+    Route::apiResource('/products', ProductController::class);
+});
