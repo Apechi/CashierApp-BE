@@ -13,7 +13,28 @@ class TypeController extends Controller
      */
     public function index()
     {
-        //
+        try {
+
+            $type = Type::all();
+
+            $json = response()->json(
+                [
+                    'status' => 200,
+                    'data' => $type
+                ]
+            );
+
+            return $json;
+        } catch (\Throwable $th) {
+
+            $json = response()->json(
+                [
+                    'status' => 500,
+                    'error' => $th->getMessage()
+                ],
+                500
+            );
+        }
     }
 
     /**
@@ -21,7 +42,34 @@ class TypeController extends Controller
      */
     public function store(StoreTypeRequest $request)
     {
-        //
+
+        try {
+            $validate = $request->validated();
+
+
+            $type = Type::create($validate);
+
+
+            $json = response()->json(
+                [
+                    'status' => 200,
+                    'data' => $type
+                ]
+            );
+
+            return $json;
+        } catch (\Throwable $th) {
+
+            $json = response()->json(
+                [
+                    'status' => 500,
+                    'data' => $th->getMessage()
+                ],
+                500
+            );
+
+            return $json;
+        }
     }
 
     /**
@@ -29,7 +77,18 @@ class TypeController extends Controller
      */
     public function show(Type $type)
     {
-        //
+        try {
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => $type
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+
+            $this->error($th);
+        }
     }
 
     /**
@@ -37,7 +96,20 @@ class TypeController extends Controller
      */
     public function update(UpdateTypeRequest $request, Type $type)
     {
-        //
+        try {
+            $validate = $request->validated();
+
+            $type->update($validate);
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => $type
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
@@ -45,6 +117,32 @@ class TypeController extends Controller
      */
     public function destroy(Type $type)
     {
-        //
+        try {
+
+            $type->delete();
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => "{$type->nama_jenis} Telah di hapus"
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
+    }
+
+
+    public function error($th)
+    {
+        $json = response()->json(
+            [
+                'status' => 200,
+                'data' => $th->getMessage()
+            ],
+            500
+        );
+
+        return $json;
     }
 }

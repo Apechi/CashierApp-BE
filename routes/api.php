@@ -2,7 +2,12 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StokController;
+use App\Http\Controllers\TableController;
+use App\Http\Controllers\TypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -20,11 +25,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
-Route::get('P', [AuthController::class, 'logout']);
+Route::get('logout', [AuthController::class, 'logout']);
 
 
 Route::middleware('auth:api')->group(function () {
     Route::get('user', [AuthController::class, 'userInfo']);
     Route::apiResource('/category', CategoryController::class);
     Route::apiResource('/products', ProductController::class);
+    Route::apiResource('/type', TypeController::class);
+    Route::apiResource('/menu', MenuController::class);
+    Route::apiResource('/customer', CustomerController::class);
+    Route::apiResource('/table', TableController::class);
+    Route::apiResource('/stok', StokController::class);
 });

@@ -22,7 +22,8 @@ class StoreTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nama_jenis' => 'required|string|max:255',
+            'kategori_id' => 'required|numeric'
         ];
     }
 }

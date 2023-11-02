@@ -12,7 +12,10 @@ class AuthController extends Controller
 {
     public function register(StoreUserRequest $request)
     {
+
+
         $validate = $request->validated();
+
 
         $validate['password'] = Hash::make($validate['password']);
         $user = User::create($validate);

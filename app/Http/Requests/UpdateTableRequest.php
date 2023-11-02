@@ -22,7 +22,9 @@ class UpdateTableRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nomor_meja' => 'required|numeric',
+            'kapasitas' => 'required|numeric',
+            'status' => 'required|in:Pesanan,Kosong'
         ];
     }
 }

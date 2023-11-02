@@ -22,7 +22,12 @@ class StoreCustomerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|string|unique:customers',
+            'nomor_telepon' => 'required|numeric',
+            'alamat' => 'required|string'
         ];
     }
 }
+
+

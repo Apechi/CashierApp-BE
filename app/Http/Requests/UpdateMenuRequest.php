@@ -22,7 +22,10 @@ class UpdateMenuRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nama_menu' => 'required|string|max:255',
+            'harga' => 'required|numeric|min:0',
+            'deskripsi' => 'required|string',
+            'jenis_id' => 'required|numeric'
         ];
     }
 }

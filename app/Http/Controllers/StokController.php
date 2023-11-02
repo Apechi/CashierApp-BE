@@ -13,7 +13,21 @@ class StokController extends Controller
      */
     public function index()
     {
-        //
+        try {
+
+            $stok = Stok::all();
+
+            $json = response()->json(
+                [
+                    'status' => 200,
+                    'data' => $stok
+                ]
+            );
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
@@ -21,7 +35,24 @@ class StokController extends Controller
      */
     public function store(StoreStokRequest $request)
     {
-        //
+        try {
+            $validate = $request->validated();
+
+
+            $stok = Stok::create($validate);
+
+
+            $json = response()->json(
+                [
+                    'status' => 200,
+                    'data' => $stok
+                ]
+            );
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
@@ -29,7 +60,18 @@ class StokController extends Controller
      */
     public function show(Stok $stok)
     {
-        //
+        try {
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => $stok
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+
+            $this->error($th);
+        }
     }
 
     /**
@@ -37,7 +79,20 @@ class StokController extends Controller
      */
     public function update(UpdateStokRequest $request, Stok $stok)
     {
-        //
+        try {
+            $validate = $request->validated();
+
+            $stok->update($validate);
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => $stok
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
@@ -45,6 +100,18 @@ class StokController extends Controller
      */
     public function destroy(Stok $stok)
     {
-        //
+        try {
+
+            $stok->delete();
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => "Data Telah di hapus"
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 }

@@ -13,7 +13,21 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        try {
+
+            $cust = Customer::all();
+
+            $json = response()->json(
+                [
+                    'status' => 200,
+                    'data' => $cust
+                ]
+            );
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
@@ -21,7 +35,24 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        //
+        try {
+            $validate = $request->validated();
+
+
+            $cust = Customer::create($validate);
+
+
+            $json = response()->json(
+                [
+                    'status' => 200,
+                    'data' => $cust
+                ]
+            );
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
@@ -29,7 +60,18 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
+        try {
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => $customer
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+
+            $this->error($th);
+        }
     }
 
     /**
@@ -37,7 +79,20 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        //
+        try {
+            $validate = $request->validated();
+
+            $customer->update($validate);
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => $customer
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
@@ -45,6 +100,31 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        try {
+
+            $customer->delete();
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => "{$customer->nama} Telah di hapus"
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
+    }
+
+    public function error($th)
+    {
+        $json = response()->json(
+            [
+                'status' => 200,
+                'data' => $th->getMessage()
+            ],
+            500
+        );
+
+        return $json;
     }
 }

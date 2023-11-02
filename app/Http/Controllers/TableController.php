@@ -13,7 +13,21 @@ class TableController extends Controller
      */
     public function index()
     {
-        //
+        try {
+
+            $table = Table::all();
+
+            $json = response()->json(
+                [
+                    'status' => 200,
+                    'data' => $table
+                ]
+            );
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
@@ -21,7 +35,24 @@ class TableController extends Controller
      */
     public function store(StoreTableRequest $request)
     {
-        //
+        try {
+            $validate = $request->validated();
+
+
+            $table = Table::create($validate);
+
+
+            $json = response()->json(
+                [
+                    'status' => 200,
+                    'data' => $table
+                ]
+            );
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
@@ -29,7 +60,18 @@ class TableController extends Controller
      */
     public function show(Table $table)
     {
-        //
+        try {
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => $table
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+
+            $this->error($th);
+        }
     }
 
     /**
@@ -37,7 +79,20 @@ class TableController extends Controller
      */
     public function update(UpdateTableRequest $request, Table $table)
     {
-        //
+        try {
+            $validate = $request->validated();
+
+            $table->update($validate);
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => $table
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
@@ -45,6 +100,31 @@ class TableController extends Controller
      */
     public function destroy(Table $table)
     {
-        //
+        try {
+
+            $table->delete();
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => "{$table->nama_menu} Telah di hapus"
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
+    }
+
+    public function error($th)
+    {
+        $json = response()->json(
+            [
+                'status' => 200,
+                'data' => $th->getMessage()
+            ],
+            500
+        );
+
+        return $json;
     }
 }

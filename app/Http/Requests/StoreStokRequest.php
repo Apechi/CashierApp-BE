@@ -22,7 +22,9 @@ class StoreStokRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'menu_id' => 'required|numeric',
+            'jumlah' => 'required|numeric|min:0',
+
         ];
     }
 }

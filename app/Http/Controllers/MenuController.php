@@ -13,7 +13,21 @@ class MenuController extends Controller
      */
     public function index()
     {
-        //
+        try {
+
+            $menu = Menu::all();
+
+            $json = response()->json(
+                [
+                    'status' => 200,
+                    'data' => $menu
+                ]
+            );
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
@@ -21,7 +35,24 @@ class MenuController extends Controller
      */
     public function store(StoreMenuRequest $request)
     {
-        //
+        try {
+            $validate = $request->validated();
+
+
+            $menu = Menu::create($validate);
+
+
+            $json = response()->json(
+                [
+                    'status' => 200,
+                    'data' => $menu
+                ]
+            );
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
@@ -29,7 +60,18 @@ class MenuController extends Controller
      */
     public function show(Menu $menu)
     {
-        //
+        try {
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => $menu
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+
+            $this->error($th);
+        }
     }
 
     /**
@@ -37,7 +79,20 @@ class MenuController extends Controller
      */
     public function update(UpdateMenuRequest $request, Menu $menu)
     {
-        //
+        try {
+            $validate = $request->validated();
+
+            $menu->update($validate);
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => $menu
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
@@ -45,6 +100,31 @@ class MenuController extends Controller
      */
     public function destroy(Menu $menu)
     {
-        //
+        try {
+
+            $menu->delete();
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => "{$menu->nama_menu} Telah di hapus"
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
+    }
+
+    public function error($th)
+    {
+        $json = response()->json(
+            [
+                'status' => 200,
+                'data' => $th->getMessage()
+            ],
+            500
+        );
+
+        return $json;
     }
 }
