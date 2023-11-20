@@ -15,12 +15,12 @@ class TypeController extends Controller
     {
         try {
 
-            $type = Type::all();
+            $type = Type::with('kategori')->get();
 
             $json = response()->json(
                 [
                     'status' => 200,
-                    'data' => $type
+                    'data' => $type->toArray()
                 ]
             );
 

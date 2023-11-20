@@ -15,12 +15,12 @@ class StokController extends Controller
     {
         try {
 
-            $stok = Stok::all();
+            $stok = Stok::with('menu')->get();
 
             $json = response()->json(
                 [
                     'status' => 200,
-                    'data' => $stok
+                    'data' => $stok->toArray()
                 ]
             );
 

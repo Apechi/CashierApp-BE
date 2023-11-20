@@ -15,12 +15,13 @@ class MenuController extends Controller
     {
         try {
 
-            $menu = Menu::all();
+            $menu = Menu::with('jenis')->get();
 
             $json = response()->json(
                 [
                     'status' => 200,
-                    'data' => $menu
+                    'data' => $menu->toArray(),
+
                 ]
             );
 
