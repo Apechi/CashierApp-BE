@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TypeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -36,5 +37,6 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('/menu', MenuController::class);
     Route::apiResource('/customer', CustomerController::class);
     Route::apiResource('/table', TableController::class);
+    Route::apiResource('/users', UserController::class);
     Route::apiResource('/stok', StokController::class);
 });

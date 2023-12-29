@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserEditRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -11,7 +14,22 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        try {
+
+            $user = User::all();
+
+            $json = response()->json(
+                [
+                    'status' => 200,
+                    'data' => $user
+
+                ]
+            );
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
@@ -19,15 +37,29 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        try {
+            $validate = $request->validated();
+
+            $user = User::create($validate);
+
+            $json = response()->json(
+                [
+                    'status' => 200,
+                    'data' => $user
+                ]
+            );
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
@@ -49,16 +81,58 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserEditRequest $request, User $user)
     {
-        //
+        try {
+
+
+            $validate = $request->validated();
+
+            $user->update($validate);
+
+            $json = response()->json(
+                [
+                    'status' => 200,
+                    'data' => $user
+                ]
+            );
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        try {
+
+            $user->delete();
+
+            $json = response()->json([
+                'status' => 200,
+                'data' => "{$user->name} Telah di hapus"
+            ]);
+
+            return $json;
+        } catch (\Throwable $th) {
+            $this->error($th);
+        }
+    }
+
+    public function error($th)
+    {
+        $json = response()->json(
+            [
+                'status' => 200,
+                'data' => $th->getMessage()
+            ],
+            500
+        );
+
+        return $json;
     }
 }

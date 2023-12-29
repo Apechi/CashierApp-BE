@@ -48,8 +48,6 @@ class TableController extends Controller
                     'data' => $table
                 ]
             );
-
-            return $json;
         } catch (\Throwable $th) {
             $this->error($th);
         }
