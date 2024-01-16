@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StokController;
@@ -39,4 +40,5 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('/table', TableController::class);
     Route::apiResource('/users', UserController::class);
     Route::apiResource('/stok', StokController::class);
+    Route::apiResource('/employee', EmployeeController::class);
 });

@@ -24,7 +24,7 @@ class UpdateUserEditRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => 'required|email|unique:users,email,'.$this->user->id,
-            'password' => 'required|min:6',
+            'password' => 'min:6',
         ];
     }
 }
